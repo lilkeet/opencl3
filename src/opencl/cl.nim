@@ -678,7 +678,7 @@ elif ApiVersion >= opencl2_0:
     AVAILABLE = 0x1027
     COMPILER_AVAILABLE = 0x1028
     EXECUTION_CAPABILITIES = 0x1029
-    QUEUE_PROPERTIES = 0x102A
+    # QUEUE_PROPERTIES = 0x102A deprecated
     QUEUE_ON_HOST_PROPERTIES = 0x102A
     NAME = 0x102B
     VENDOR = 0x102C
@@ -1949,7 +1949,6 @@ elif ApiVersion >= opencl2_0:
     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
     DevicePartitionProperty | set[DeviceAffinityDomain] |
     set[DeviceSvmCapabilities] |
-    set[DeviceAtomicCapability] | set[DeviceDeviceEnqueueCapability] |
     set[CommandQueueProperty] | Uchar
 else:
   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
