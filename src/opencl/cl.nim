@@ -1955,7 +1955,6 @@ else:
     cstring |  DeviceFpConfig | DeviceMemCacheType |
     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
-    DevicePartitionProperty | set[DeviceAffinityDomain] |
     set[CommandQueueProperty] | Uchar
 
 proc getDeviceInfo*[T: DeviceQueryResult](
