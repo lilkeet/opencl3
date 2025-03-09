@@ -2117,8 +2117,7 @@ when ApiVersion >= opencl3_0:
 #  Command Queue APIs
 when ApiVersion >= opencl2_0:
   type
-    CommandQueueCreationValue* {.size: sizeOf(CommandQueueProperty),
-                                union.} = tuple
+    CommandQueueCreationValue* {.union.} = tuple
       properties: set[CommandQueueProperty]
       sizeVal: Uint
     CommandQueueCreationPropertyPair* {.packed.} = tuple
