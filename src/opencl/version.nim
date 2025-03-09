@@ -48,8 +48,8 @@ const ApiVersion* =
   when TargetOpenClVersion in OpenClVersion.fullSet.mapIt(it.ord):
     OpenClVersion(TargetOpenClVersion)
   else:
-    {.warning: "TargetOpenClApiVersion is not a valid value (100, 110, 120, 200," &
-               "210, 220, 300). Defaulting to 300 (OpenCL 3.0)".}
+    {.warning: "TargetOpenClApiVersion is not a valid value (100, 110, 120, " &
+      "200, 210, 220, 300). Defaulting to 300 (OpenCL 3.0)".}
     opencl3_0
 
 #  Allow deprecated APIs for older OpenCL versions.

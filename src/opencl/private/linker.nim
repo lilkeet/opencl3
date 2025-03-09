@@ -9,11 +9,10 @@ macro passLinkerOptions*() =
   ## Call this as many times as you like: this will only pass the options once.
   const PassLinkerCalledCount = CacheCounter"passLinkerCalledCount"
 
-  result = if PassLinkerCalledCount.value == 0:
-      inc PassLinkerCalledCount
-      genAst:
-        when defined(macosx):
-          {.passL: "-framework OpenCL".}
-    else:
-      newEmptyNode()
+  result = newEmptyNode()
 
+  if PassLinkerCalledCount.value == 0:
+    inc PassLinkerCalledCount
+    result = genAst:
+      when defined(macosx):
+        {.passL: "-framework OpenCL".}
