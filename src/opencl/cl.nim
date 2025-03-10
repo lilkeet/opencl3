@@ -402,7 +402,7 @@ else:
 # so just use `std/setutils.fullset - Custom`instead.
 when ApiVersion >= opencl1_2:
   type DeviceType* {.size: sizeOf(Bitfield), pure.} = enum
-    DEFAULT
+    DEFAULT = 1
     CPU
     GPU
     ACCELERATOR
@@ -410,7 +410,7 @@ when ApiVersion >= opencl1_2:
   const DeviceTypeAll* = DeviceType.fullset - {DeviceType.CUSTOM}
 else:
   type DeviceType* {.size: sizeOf(Bitfield), pure.} = enum
-    DEFAULT
+    DEFAULT = 1
     CPU
     GPU
     ACCELERATOR
