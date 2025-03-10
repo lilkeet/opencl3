@@ -399,15 +399,15 @@ else:
 #  cl_device_type - bitfield
 # had to leave off the all option as the nim compiler complained about it being
 # too big...
-# so just use `std/setutils.fullset - Custom`instead.
+# so just use `std/setutils.fullset`instead.
 when ApiVersion >= opencl1_2:
   type DeviceType* {.size: sizeOf(Bitfield), pure.} = enum
-    DEFAULT = 1
-    CPU
-    GPU
-    ACCELERATOR
-    CUSTOM
-  const DeviceTypeAll* = DeviceType.fullset - {DeviceType.CUSTOM}
+    DEFAULT = (1 shl 0)
+    CPU = (1 shl 1)
+    GPU = (1 shl 2)
+    ACCELERATOR = (1 shl 3)
+    CUSTOM = (1 shl 4)
+  const DeviceTypeAll* = DeviceType.fullset
 else:
   type DeviceType* {.size: sizeOf(Bitfield), pure.} = enum
     DEFAULT = 1
