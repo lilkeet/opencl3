@@ -1928,9 +1928,9 @@ else:
     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
     set[CommandQueueProperty] | Uchar
 
-proc getDeviceInfo*[T: DeviceQueryResult](
+proc getDeviceInfo*(
   device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: ptr[T]|cstring;
+  paramValue: ptr[DeviceQueryResult]|cstring;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Query specific information about a device
