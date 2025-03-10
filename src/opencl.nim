@@ -34,4 +34,4 @@ proc raiseOpenClError*(x: ErrorCode) {.noinline, noReturn,
   raise newException(OpenClError, $x & " " & $int(x))
 
 func check*(a: ErrorCode) =
-  if a != ErrorCode.Success: raiseOpenClError(y)
+  if a != ErrorCode.Success: raiseOpenClError(a)
