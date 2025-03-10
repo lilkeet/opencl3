@@ -1930,7 +1930,7 @@ else:
 
 proc getDeviceInfo*[T: DeviceQueryResult](
   device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: ptr[T]|cstring;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Query specific information about a device
@@ -1938,7 +1938,7 @@ proc getDeviceInfo*[T: DeviceQueryResult](
 when ApiVersion >= opencl1_2:
   proc createSubDevices*(
     inDevice: DeviceId;
-    properties: ptr[DevicePartitionProperty] | cstring;
+    properties: ptr[DevicePartitionProperty];
     numDevices: Uint; outDevices: ptr UncheckedArray[DeviceId];
     numDevicesRet: ptr Uint): ErrorCode
       {.climport.}
