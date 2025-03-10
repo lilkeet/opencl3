@@ -1882,11 +1882,6 @@ when ApiVersion >= opencl3_0:
 #  Platform API
 proc getPlatformIDs*(
   numEntries: Uint; platforms: ptr UncheckedArray[PlatformId];
-  numPlatforms: out Uint): ErrorCode
-    {.climport.}
-      ## Query list of available platforms
-proc getPlatformIDs*(
-  numEntries: Uint; platforms: ptr UncheckedArray[PlatformId];
   numPlatforms: ptr Uint): ErrorCode
     {.climport.}
       ## Query list of available platforms
@@ -1894,37 +1889,13 @@ proc getPlatformIDs*(
 
 proc getPlatformInfo*(
   platform: PlatformId; paramName: PlatformInfo; paramValueSize: csize_t;
-  paramValue: out cstring;
-  paramValueSizeRet: out csize_t): ErrorCode
-    {.climport.}
-      ## Query information about an OpenCL platform
-proc getPlatformInfo*(
-  platform: PlatformId; paramName: PlatformInfo; paramValueSize: csize_t;
-  paramValue: ptr cstring;
+  paramValue: cstring;
   paramValueSizeRet: ptr csize_t): ErrorCode
-    {.climport.}
-      ## Query information about an OpenCL platform
-proc getPlatformInfo*(
-  platform: PlatformId; paramName: PlatformInfo; paramValueSize: csize_t;
-  paramValue: out cstring;
-  paramValueSizeRet: ptr csize_t): ErrorCode
-    {.climport.}
-      ## Query information about an OpenCL platform
-proc getPlatformInfo*(
-  platform: PlatformId; paramName: PlatformInfo; paramValueSize: csize_t;
-  paramValue: ptr cstring;
-  paramValueSizeRet: out csize_t): ErrorCode
     {.climport.}
       ## Query information about an OpenCL platform
 
 
 #  Device APIs
-proc getDeviceIDs*(
-  platform: PlatformId; deviceType: set[DeviceType]; numEntries: Uint;
-  devices: ptr UncheckedArray[DeviceId];
-  numDevices: out Uint): ErrorCode
-    {.climport.}
-      ## Query devices available on a platform
 
 proc getDeviceIDs*(
   platform: PlatformId; deviceType: set[DeviceType]; numEntries: Uint;
@@ -1935,7 +1906,7 @@ proc getDeviceIDs*(
 
 when ApiVersion >= opencl3_0:
   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-    cstring | NameVersion | DeviceFpConfig | DeviceMemCacheType |
+    NameVersion | DeviceFpConfig | DeviceMemCacheType |
     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
     PlatformId | OpenClVersion | #[VersionKHR |]# DeviceId |
     DevicePartitionProperty | set[DeviceAffinityDomain] |
@@ -1944,7 +1915,7 @@ when ApiVersion >= opencl3_0:
     set[CommandQueueProperty] | Uchar
 elif ApiVersion >= opencl2_0:
   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-    cstring |  DeviceFpConfig | DeviceMemCacheType |
+     DeviceFpConfig | DeviceMemCacheType |
     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
     DevicePartitionProperty | set[DeviceAffinityDomain] |
@@ -1952,65 +1923,27 @@ elif ApiVersion >= opencl2_0:
     set[CommandQueueProperty] | Uchar
 else:
   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-    cstring |  DeviceFpConfig | DeviceMemCacheType |
+    DeviceFpConfig | DeviceMemCacheType |
     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
     set[CommandQueueProperty] | Uchar
 
 proc getDeviceInfo*[T: DeviceQueryResult](
   device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: out T;
-  paramValueSizeRet: out csize_t): ErrorCode
-    {.climport.}
-      ## Query specific information about a device
-proc getDeviceInfo*[T: DeviceQueryResult](
-  device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
   paramValue: ptr T;
   paramValueSizeRet: ptr csize_t): ErrorCode
-    {.climport.}
-      ## Query specific information about a device
-proc getDeviceInfo*[T: DeviceQueryResult](
-  device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: out T;
-  paramValueSizeRet: ptr csize_t): ErrorCode
-    {.climport.}
-      ## Query specific information about a device
-proc getDeviceInfo*[T: DeviceQueryResult](
-  device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
-  paramValueSizeRet: out csize_t): ErrorCode
     {.climport.}
       ## Query specific information about a device
 
 when ApiVersion >= opencl1_2:
   proc createSubDevices*(
     inDevice: DeviceId;
-    properties: out DevicePartitionProperty;
-    numDevices: Uint; outDevices: ptr UncheckedArray[DeviceId];
-    numDevicesRet: out Uint): ErrorCode
-      {.climport.}
-        ## Create sub-devices partitioning an OpenCL device
-  proc createSubDevices*(
-    inDevice: DeviceId;
-    properties: ptr DevicePartitionProperty;
+    properties: ptr[DevicePartitionProperty] | cstring;
     numDevices: Uint; outDevices: ptr UncheckedArray[DeviceId];
     numDevicesRet: ptr Uint): ErrorCode
       {.climport.}
         ## Create sub-devices partitioning an OpenCL device
-  proc createSubDevices*(
-    inDevice: DeviceId;
-    properties: out DevicePartitionProperty;
-    numDevices: Uint; outDevices: ptr UncheckedArray[DeviceId];
-    numDevicesRet: ptr Uint): ErrorCode
-      {.climport.}
-        ## Create sub-devices partitioning an OpenCL device
-  proc createSubDevices*(
-    inDevice: DeviceId;
-    properties: ptr DevicePartitionProperty;
-    numDevices: Uint; outDevices: ptr UncheckedArray[DeviceId];
-    numDevicesRet: out Uint): ErrorCode
-      {.climport.}
-        ## Create sub-devices partitioning an OpenCL device
+
 
   proc retainDevice*(device: DeviceId): ErrorCode
     {.climport.}
