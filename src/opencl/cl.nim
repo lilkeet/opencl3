@@ -1904,33 +1904,33 @@ proc getDeviceIDs*(
     {.climport.}
       ## Query devices available on a platform
 
-when ApiVersion >= opencl3_0:
-  type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-    NameVersion | DeviceFpConfig | DeviceMemCacheType |
-    DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
-    PlatformId | OpenClVersion | #[VersionKHR |]# DeviceId |
-    DevicePartitionProperty | set[DeviceAffinityDomain] |
-    set[DeviceSvmCapabilities] |
-    set[DeviceAtomicCapability] | set[DeviceDeviceEnqueueCapability] |
-    set[CommandQueueProperty] | Uchar
-elif ApiVersion >= opencl2_0:
-  type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-     DeviceFpConfig | DeviceMemCacheType |
-    DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
-    PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
-    DevicePartitionProperty | set[DeviceAffinityDomain] |
-    set[DeviceSvmCapabilities] |
-    set[CommandQueueProperty] | Uchar
-else:
-  type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
-    DeviceFpConfig | DeviceMemCacheType |
-    DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
-    PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
-    set[CommandQueueProperty] | Uchar
+# when ApiVersion >= opencl3_0:
+#   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
+#     NameVersion | DeviceFpConfig | DeviceMemCacheType |
+#     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
+#     PlatformId | OpenClVersion | #[VersionKHR |]# DeviceId |
+#     DevicePartitionProperty | set[DeviceAffinityDomain] |
+#     set[DeviceSvmCapabilities] |
+#     set[DeviceAtomicCapability] | set[DeviceDeviceEnqueueCapability] |
+#     set[CommandQueueProperty] | Uchar
+# elif ApiVersion >= opencl2_0:
+#   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
+#      DeviceFpConfig | DeviceMemCacheType |
+#     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
+#     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
+#     DevicePartitionProperty | set[DeviceAffinityDomain] |
+#     set[DeviceSvmCapabilities] |
+#     set[CommandQueueProperty] | Uchar
+# else:
+#   type DeviceQueryResult* = DeviceType | Uint | csize_t | Ulong | Bool |
+#     DeviceFpConfig | DeviceMemCacheType |
+#     DeviceLocalMemType | DeviceExecCapabilities | CommandQueueProperty |
+#     PlatformId | OpenClVersion |  #[VersionKHR |]# DeviceId |
+#     set[CommandQueueProperty] | Uchar
 
 proc getDeviceInfo*(
   device: DeviceId; paramName: DeviceInfo; paramValueSize: csize_t;
-  paramValue: ptr[DeviceQueryResult]|cstring;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Query specific information about a device
@@ -2027,13 +2027,13 @@ proc releaseContext*(context: Context): ErrorCode
   {.climport.}
     ## Release an OpenCL context
 
-type ContextQueryResult* = Uint | UncheckedArray[DeviceId] |
-  UncheckedArray[ContextCreationPair]
+# type ContextQueryResult* = Uint | UncheckedArray[DeviceId] |
+#   UncheckedArray[ContextCreationPair]
 
 proc getContextInfo*(
   context: Context; paramName: ContextInfo; paramValueSize: csize_t;
-  paramValue: ptr ContextQueryResult;
-  paramValueSizeRet: out csize_t): ErrorCode
+  paramValue: pointer;
+  paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
      ## Query information about an OpenCL context
 
@@ -2071,20 +2071,20 @@ proc releaseCommandQueue*(commandQueue: CommandQueue): ErrorCode
   {.climport.}
     ## Decrements the command_queue reference count.
 
-when ApiVersion >= opencl3_0:
-  type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
-    set[CommandQueueProperty] | CommandQueue |
-    UncheckedArray[CommandQueueCreationPropertyPair]
-elif ApiVersion >= opencl2_1:
-  type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
-    set[CommandQueueProperty] | CommandQueue
-else:
-  type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
-    set[CommandQueueProperty]
+# when ApiVersion >= opencl3_0:
+#   type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
+#     set[CommandQueueProperty] | CommandQueue |
+#     UncheckedArray[CommandQueueCreationPropertyPair]
+# elif ApiVersion >= opencl2_1:
+#   type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
+#     set[CommandQueueProperty] | CommandQueue
+# else:
+#   type CommandQueueParameterQueryResult* = Context | DeviceId | Uint |
+#     set[CommandQueueProperty]
 
-proc getCommandQueueInfo*[T: CommandQueueParameterQueryResult](
+proc getCommandQueueInfo*(
   commandQueue: CommandQueue; paramName: CommandQueueInfo;
-  paramValueSize: csize_t; paramValue: ptr T;
+  paramValueSize: csize_t; paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Query information about a command-queue.
@@ -2154,49 +2154,49 @@ proc getSupportedImageFormats*(
       ## Get the list of image formats supported by an OpenCL implementation.
 
 
-when ApiVersion >= opencl2_0:
-  type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
-    pointer | Uint | Context | Mem | Bool
-elif ApiVersion >= opencl1_1:
-  type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
-    pointer | Uint | Context | Mem
-else:
-  type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
-    pointer | Uint | Context
+# when ApiVersion >= opencl2_0:
+#   type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
+#     pointer | Uint | Context | Mem | Bool
+# elif ApiVersion >= opencl1_1:
+#   type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
+#     pointer | Uint | Context | Mem
+# else:
+#   type MemoryObjectInfoQueryResult* = MemObjectType | set[MemFlag] | csize_t |
+#     pointer | Uint | Context
 
 proc getMemObjectInfo*(
   memobj: Mem; paramName: MemInfo; paramValueSize: csize_t;
-  paramValue: ptr MemoryObjectInfoQueryResult;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Get information that is common to all memory objects (buffer and image
       ## objects).
 
-when ApiVersion >= opencl1_2 and UseDeprecatedOpenCl1_2Apis:
-  type ImageObjQueryResult* = ImageFormat | csize_t | Uint | Mem
-elif ApiVersion >= opencl1_2:
-  type ImageObjQueryResult* = ImageFormat | csize_t | Uint
-else:
-  type ImageObjQueryResult* = ImageFormat | csize_t
+# when ApiVersion >= opencl1_2 and UseDeprecatedOpenCl1_2Apis:
+#   type ImageObjQueryResult* = ImageFormat | csize_t | Uint | Mem
+# elif ApiVersion >= opencl1_2:
+#   type ImageObjQueryResult* = ImageFormat | csize_t | Uint
+# else:
+#   type ImageObjQueryResult* = ImageFormat | csize_t
 
 # TODO fix doc linking
-proc getImageInfo*[T: ImageObjQueryResult](
+proc getImageInfo*(
   image: Mem; paramName: ImageInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Get information specific to an image object created with the
       ## `createImage proc <#createImage>`_.
 
 when ApiVersion >= opencl2_0:
-  when ApiVersion >= opencl3_0:
-    type PipeObjQueryResult* = Uint | pointer # unused
-  else:
-    type PipeObjQueryResult* = Uint
+  # when ApiVersion >= opencl3_0:
+  #   type PipeObjQueryResult* = Uint | pointer # unused
+  # else:
+  #   type PipeObjQueryResult* = Uint
 
-  proc getPipeInfo*[T: PipeObjQueryResult](
+  proc getPipeInfo*(
     pipe: Mem; paramName: PipeInfo; paramValueSize: csize_t;
-    paramValue: ptr T;
+    paramValue: pointer;
     paramValueSizeRet: ptr csize_t): ErrorCode
       {.climport.}
         ##  Get information specific to a pipe object created with the
@@ -2285,19 +2285,19 @@ proc releaseSampler*(sampler: Sampler): ErrorCode
   {.climport.}
     ## Decrements the sampler reference count.
 
-when ApiVersion >= opencl3_0:
-  type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
-    FilterMode | UncheckedArray[SamplerPropertyPair]
-elif ApiVersion >= opencl2_0:
-  type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
-    FilterMode | UncheckedArray[SamplerPropertyPair]
-else:
-    type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
-    FilterMode
+# when ApiVersion >= opencl3_0:
+#   type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
+#     FilterMode | UncheckedArray[SamplerPropertyPair]
+# elif ApiVersion >= opencl2_0:
+#   type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
+#     FilterMode | UncheckedArray[SamplerPropertyPair]
+# else:
+#     type SamplerObjQueryResult* = Uint | Context | Bool | AddressingMode |
+#     FilterMode
 
-proc getSamplerInfo*[T: SamplerObjQueryResult](
+proc getSamplerInfo*(
   sampler: Sampler; paramName: SamplerInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns information about the sampler object.
@@ -2398,35 +2398,35 @@ when ApiVersion >= opencl1_2:
       ## Allows the implementation to release the resources allocated by the
       ## OpenCL compiler for a platform.
 
-when ApiVersion >= opencl2_2 and UseDeprecatedOpenCl2_2Apis:
-  type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
-    cstring | UncheckedArray[csize_t] | UncheckedArray[byte] | csize_t |
-    Bool
-elif ApiVersion >= opencl1_2:
-  type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
-    cstring | UncheckedArray[csize_t] | UncheckedArray[byte] | csize_t
-else:
-  type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
-    cstring | UncheckedArray[csize_t] | UncheckedArray[byte]
+# when ApiVersion >= opencl2_2 and UseDeprecatedOpenCl2_2Apis:
+#   type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
+#     cstring | UncheckedArray[csize_t] | UncheckedArray[byte] | csize_t |
+#     Bool
+# elif ApiVersion >= opencl1_2:
+#   type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
+#     cstring | UncheckedArray[csize_t] | UncheckedArray[byte] | csize_t
+# else:
+#   type ProgramObjQueryResult* = Uint | Context | UncheckedArray[DeviceId] |
+#     cstring | UncheckedArray[csize_t] | UncheckedArray[byte]
 
-proc getProgramInfo*[T: ProgramObjQueryResult](
+proc getProgramInfo*(
   program: Program; paramName: ProgramInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns information about the program object.
 
-when ApiVersion >= opencl2_0:
-  type ProgramBuildQueryResult* = BuildStatus | cstring | ProgramBinaryType |
-    csize_t
-elif ApiVersion >= opencl1_2:
-  type ProgramBuildQueryResult* = BuildStatus | cstring | ProgramBinaryType
-else:
-  type ProgramBuildQueryResult* = BuildStatus | cstring
+# when ApiVersion >= opencl2_0:
+#   type ProgramBuildQueryResult* = BuildStatus | cstring | ProgramBinaryType |
+#     csize_t
+# elif ApiVersion >= opencl1_2:
+#   type ProgramBuildQueryResult* = BuildStatus | cstring | ProgramBinaryType
+# else:
+#   type ProgramBuildQueryResult* = BuildStatus | cstring
 
-proc getProgramBuildInfo*[T: ProgramBuildQueryResult](
+proc getProgramBuildInfo*(
   program: Program; device: DeviceId; paramName: ProgramBuildInfo;
-  paramValueSize: csize_t; paramValue: ptr T;
+  paramValueSize: csize_t; paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns build information for each device in the program object.
@@ -2478,39 +2478,39 @@ when ApiVersion >= opencl2_0:
         ## Set a SVM pointer as the argument value for a specific
         ## argument of a kernel.
 
-  proc setKernelExecInfo*[T](
+  proc setKernelExecInfo*(
     kernel: Kernel; paramName: KernelExecInfo;
-    paramValueSize: csize_t; paramValue: ptr T): ErrorCode
+    paramValueSize: csize_t; paramValue: pointer): ErrorCode
       {.climport.}
         ## Pass additional information other than argument values to a kernel.
 
 
-type KernelObjQueryResult* = cstring | Uint | Context | Program
+# type KernelObjQueryResult* = cstring | Uint | Context | Program
 
-proc getKernelInfo*[T: KernelObjQueryResult](
+proc getKernelInfo*(
   kernel: Kernel; paramName: KernelInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns information about the kernel object.
 
 when ApiVersion >= opencl1_2:
-  type KernelArgQueryResult* = KernelArgAddressQualifier | cstring|
-    KernelArgAccessQualifier | KernelArgTypeQualifier
+  # type KernelArgQueryResult* = KernelArgAddressQualifier | cstring|
+  #   KernelArgAccessQualifier | KernelArgTypeQualifier
 
-  proc getKernelArgInfo*[T: KernelArgQueryResult](
+  proc getKernelArgInfo*(
     kernel: Kernel; argIndx: Uint; paramName: KernelArgInfo;
-    paramValueSize: csize_t; paramValue: ptr T;
+    paramValueSize: csize_t; paramValue: pointer;
     paramValueSizeRet: ptr csize_t): ErrorCode
       {.climport.}
         ## Returns information about the arguments of a kernel.
 
 
-type KernelObjDeviceQueryResult* = UncheckedArray[csize_t] | csize_t | Ulong
+# type KernelObjDeviceQueryResult* = UncheckedArray[csize_t] | csize_t | Ulong
 
-proc getKernelWorkGroupInfo*[T: KernelObjDeviceQueryResult](
+proc getKernelWorkGroupInfo*(
   kernel: Kernel; device: DeviceId; paramName: KernelWorkGroupInfo;
-  paramValueSize: csize_t; paramValue: ptr T;
+  paramValueSize: csize_t; paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns information about the kernel object that may be specific
@@ -2543,14 +2543,14 @@ proc waitForEvents*(
       ## Waits on the host thread for commands identified by event objects
       ## to complete.
 
-when ApiVersion >= opencl1_1:
-  type EventObjQueryResult* = CommandQueue | Context | CommandType | Int | Uint
-else:
-  type EventObjQueryResult* = CommandQueue | CommandType | Int | Uint
+# when ApiVersion >= opencl1_1:
+#   type EventObjQueryResult* = CommandQueue | Context | CommandType | Int | Uint
+# else:
+#   type EventObjQueryResult* = CommandQueue | CommandType | Int | Uint
 
-proc getEventInfo*[T: EventObjQueryResult](
+proc getEventInfo*(
   event: Event; paramName: EventInfo; paramValueSize: csize_t;
-  paramValue: ptr T;
+  paramValue: pointer;
   paramValueSizeRet: ptr csize_t): ErrorCode
     {.climport.}
       ## Returns information about the event object.
