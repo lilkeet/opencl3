@@ -33,7 +33,5 @@ proc raiseOpenClError*(x: ErrorCode) {.noinline, noReturn,
                                       raises: [OpenClError].} =
   raise newException(OpenClError, $x & " " & $int(x))
 
-template check*(a: ErrorCode) =
-  # ensure we only evaluate once even if the expression has side effects:
-  let y = a
-  if y != ErrorCode.Success: raiseOpenClError(y)
+func check*(a: ErrorCode) =
+  if a != ErrorCode.Success: raiseOpenClError(y)
