@@ -31,7 +31,7 @@ proc main() =
     B[i] = Int i
 
   var numPlatforms: Uint
-  check getPlatformIDs(0, nil, numPlatforms)
+  check getPlatformIDs(0, nil, addr numPlatforms)
 
   # Allocate enough space for each platform
   var platforms: array[64, PlatformId]
@@ -40,7 +40,7 @@ proc main() =
 
   var numDevices: Uint
   check getDeviceIDs(platforms[0], DeviceTypeAll, 0,
-                     nil, numDevices)
+                     nil, addr numDevices)
 
   # Allocate enough space for each device
   var devices: array[64, DeviceId]
