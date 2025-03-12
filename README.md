@@ -1,4 +1,4 @@
-opencl
+opencl3
 ======
 
 Low-level wrapper for OpenCL
